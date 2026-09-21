@@ -11,7 +11,9 @@ HF_USERNAME = os.environ.get("HF_USERNAME", "GANTI_USERNAME_HF")
 
 BASE_MODEL = "Qwen/Qwen2.5-1.5B-Instruct"
 DATASET = "b-mc2/sql-create-context"
-NIM_MODEL = "meta/llama-3.3-70b-instruct"
+NIM_MODEL = "mistralai/mistral-nemotron"
+NIM_EXTRA = None        
+NIM_MAX_TOKENS = 200
 SEED = 42
 
 # Ukuran data
