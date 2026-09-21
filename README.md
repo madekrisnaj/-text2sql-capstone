@@ -1,6 +1,4 @@
-# Text-to-SQL Specialist dengan Verifikasi Eksekusi
-
-Capstone Project 5, Navasena AI NCA-GENL Batch 6.
+# Text-to-SQL Specialist 
 
 Model Qwen2.5-1.5B-Instruct di-fine-tune dengan QLoRA pada dataset
 [sql-create-context](https://huggingface.co/datasets/b-mc2/sql-create-context) (CC-BY-4.0),
