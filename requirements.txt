@@ -1,0 +1,12 @@
+# Dependensi untuk notebook di Google Colab (training dan evaluasi)
+transformers==4.46.3
+trl==0.12.2
+peft==0.13.2
+accelerate==1.1.1
+bitsandbytes>=0.44.1
+datasets>=3.0
+sqlglot>=25.0
+statsmodels>=0.14
+openai>=1.40
+faker>=30.0
+matplotlib

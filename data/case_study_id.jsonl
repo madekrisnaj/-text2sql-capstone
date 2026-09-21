@@ -1,0 +1,20 @@
+{"question": "Berapa jumlah pelanggan yang tinggal di Jakarta?", "gold": "SELECT COUNT(*) FROM pelanggan WHERE kota = 'Jakarta'", "tipe": "non_join"}
+{"question": "Tampilkan nama dan harga semua barang kategori Elektronik.", "gold": "SELECT nama_barang, harga FROM barang WHERE kategori = 'Elektronik'", "tipe": "non_join"}
+{"question": "Berapa harga barang termahal?", "gold": "SELECT MAX(harga) FROM barang", "tipe": "non_join"}
+{"question": "Berapa rata-rata harga barang kategori Fashion?", "gold": "SELECT AVG(harga) FROM barang WHERE kategori = 'Fashion'", "tipe": "non_join"}
+{"question": "Berapa total pendapatan dari seluruh transaksi?", "gold": "SELECT SUM(total) FROM transaksi", "tipe": "non_join"}
+{"question": "Berapa jumlah transaksi pada bulan Maret 2025?", "gold": "SELECT COUNT(*) FROM transaksi WHERE tanggal BETWEEN '2025-03-01' AND '2025-03-31'", "tipe": "non_join"}
+{"question": "Tampilkan jumlah pelanggan di setiap kota.", "gold": "SELECT kota, COUNT(*) FROM pelanggan GROUP BY kota", "tipe": "non_join"}
+{"question": "Kategori barang apa saja yang tersedia?", "gold": "SELECT DISTINCT kategori FROM barang", "tipe": "non_join"}
+{"question": "Tampilkan 3 barang termurah beserta harganya.", "gold": "SELECT nama_barang, harga FROM barang ORDER BY harga ASC LIMIT 3", "tipe": "non_join"}
+{"question": "Berapa banyak barang yang harganya di atas 1 juta rupiah?", "gold": "SELECT COUNT(*) FROM barang WHERE harga > 1000000", "tipe": "non_join"}
+{"question": "Tampilkan jumlah transaksi per bulan pada tahun 2025.", "gold": "SELECT strftime('%m', tanggal) AS bulan, COUNT(*) FROM transaksi WHERE tanggal LIKE '2025%' GROUP BY bulan", "tipe": "non_join"}
+{"question": "Tampilkan nama pelanggan yang pernah membeli barang kategori Elektronik.", "gold": "SELECT DISTINCT p.nama FROM pelanggan p JOIN transaksi t ON p.id_pelanggan = t.id_pelanggan JOIN barang b ON t.id_barang = b.id_barang WHERE b.kategori = 'Elektronik'", "tipe": "join"}
+{"question": "Berapa total pendapatan untuk setiap kategori barang?", "gold": "SELECT b.kategori, SUM(t.total) FROM transaksi t JOIN barang b ON t.id_barang = b.id_barang GROUP BY b.kategori", "tipe": "join"}
+{"question": "Siapa 5 pelanggan dengan total belanja terbesar?", "gold": "SELECT p.nama, SUM(t.total) AS total_belanja FROM pelanggan p JOIN transaksi t ON p.id_pelanggan = t.id_pelanggan GROUP BY p.id_pelanggan ORDER BY total_belanja DESC LIMIT 5", "tipe": "join"}
+{"question": "Kota mana yang memiliki total pendapatan transaksi terbesar?", "gold": "SELECT p.kota FROM pelanggan p JOIN transaksi t ON p.id_pelanggan = t.id_pelanggan GROUP BY p.kota ORDER BY SUM(t.total) DESC LIMIT 1", "tipe": "join"}
+{"question": "Barang apa yang paling banyak terjual berdasarkan jumlah unit?", "gold": "SELECT b.nama_barang FROM barang b JOIN transaksi t ON b.id_barang = t.id_barang GROUP BY b.id_barang ORDER BY SUM(t.jumlah) DESC LIMIT 1", "tipe": "join"}
+{"question": "Berapa jumlah transaksi dari pelanggan yang tinggal di Surabaya?", "gold": "SELECT COUNT(*) FROM transaksi t JOIN pelanggan p ON t.id_pelanggan = p.id_pelanggan WHERE p.kota = 'Surabaya'", "tipe": "join"}
+{"question": "Tampilkan nama barang yang belum pernah terjual.", "gold": "SELECT b.nama_barang FROM barang b LEFT JOIN transaksi t ON b.id_barang = t.id_barang WHERE t.id_transaksi IS NULL", "tipe": "join"}
+{"question": "Berapa total pendapatan dari kategori Fashion?", "gold": "SELECT SUM(t.total) FROM transaksi t JOIN barang b ON t.id_barang = b.id_barang WHERE b.kategori = 'Fashion'", "tipe": "join"}
+{"question": "Pelanggan mana saja yang melakukan lebih dari 6 transaksi?", "gold": "SELECT p.nama FROM pelanggan p JOIN transaksi t ON p.id_pelanggan = t.id_pelanggan GROUP BY p.id_pelanggan HAVING COUNT(*) > 6", "tipe": "join"}
