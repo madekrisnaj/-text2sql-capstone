@@ -1,5 +1,4 @@
---extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
-llama-cpp-python==0.3.2
+llama-cpp-python
 streamlit>=1.39
 pandas
 sqlglot>=25.0
