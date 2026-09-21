@@ -7,8 +7,9 @@ from tqdm.auto import tqdm
 
 
 def clean_sql(text):
-    """Membersihkan output model: buang blok markdown dan titik koma di akhir."""
+    """Membersihkan output model: buang teks reasoning, blok markdown, dan titik koma akhir."""
     t = (text or "").strip()
+    t = re.sub(r"<think>.*?</think>", "", t, flags=re.S).strip()
     m = re.search(r"```(?:sql)?\s*(.*?)```", t, re.S | re.I)
     if m:
         t = m.group(1)
@@ -45,20 +46,25 @@ def generate_hf(model, tok, prompts, batch_size=16, max_new_tokens=128):
 
 
 def generate_nim(prompts, model, pause=1.5):
+    """Generate SQL via NVIDIA NIM. Pengaturan diambil dari src/config.py."""
     from openai import OpenAI
+    from . import config as C
 
     client = OpenAI(base_url="https://integrate.api.nvidia.com/v1",
                     api_key=os.environ["NIM_API_KEY"])
+    kw = {"extra_body": C.NIM_EXTRA} if C.NIM_EXTRA else {}
     outs = []
     for p in tqdm(prompts, desc="NIM"):
         result = ""
         for attempt in range(3):
             try:
-                r = client.chat.completions.create(model=model, messages=p,
-                                                   temperature=0, max_tokens=200)
+                r = client.chat.completions.create(model=model, messages=p, temperature=0,
+                                                   max_tokens=C.NIM_MAX_TOKENS, **kw)
                 result = r.choices[0].message.content
                 break
             except Exception as e:
+                if any(code in str(e) for code in ("404", "410", "401", "403")):
+                    raise RuntimeError(f"Model {model} tidak bisa dipakai: {e}") from e
                 print(f"Percobaan {attempt + 1} gagal: {e}")
                 time.sleep(5 * (attempt + 1))
         outs.append(clean_sql(result))
